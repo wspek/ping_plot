@@ -22,7 +22,11 @@ def render(in_file, out_folder):
 
 
 def _parse_times(lines):
-    timestamps = [re.search(r"\[([^\]]+)\]", line).group(1) for line in lines]
+    try:
+        timestamps = [re.search(r"\[([^\]]+)\]", line).group(1) for line in lines]
+    except Exception as e:
+        print("You may need to clean up the ping plot file first")
+
     timestamps = [datetime.fromtimestamp(float(line)) for line in timestamps]
     return timestamps
 
@@ -57,7 +61,7 @@ def _draw_plot(title, out_folder, data):
     fig, ax = plt.subplots(figsize=(WIDTH / DPI, HEIGHT / DPI))
     ax.set(title=title, xlabel=XLABEL, ylabel=YLABEL)
     ax.xaxis.set_major_formatter(mdates.DateFormatter('%H:%M:%S'))
-    ax.bar(datenums[:4000], latencies[:4000], width=0.00002)
+    ax.bar(datenums[:], latencies[:], width=0.00002)
     ax.legend()
 
     plt.savefig(f'{out_folder}/{datetime.now()}.png', dpi=DPI)  # noqa
