@@ -62,8 +62,8 @@ def write_to_influxdb(data):
 
 
 def run():
-    # result = run_speedtest()
-    result = ['41338', 'Cooperativa de Colonia Caroya y Jesus Maria Ltda', 'Colonia Caroya', '2023-04-15T18:41:54.708922Z', '663.0926436032137', '78.865', '19914755.186711118', '2171532.6305631828', '', '181.102.18.27']
+    result = run_speedtest()
+    # result = ['41338', 'Cooperativa de Colonia Caroya y Jesus Maria Ltda', 'Colonia Caroya', '2023-04-15T18:41:54.708922Z', '663.0926436032137', '78.865', '19914755.186711118', '2171532.6305631828', '', '181.102.18.27']
     write_to_influxdb(result)
 
 
