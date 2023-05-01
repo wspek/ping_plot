@@ -18,11 +18,13 @@ logging.basicConfig(filename=LOG_FILE, level=logging.INFO, format='%(asctime)s -
 def run_speedtest():
     logging.info('Running speedtest')
 
-    with open(LOG_FILE, 'a') as log_file:
-        proc = subprocess.Popen("speedtest-cli --csv", stdout=log_file, stderr=log_file, shell=True)
-        proc.communicate()
-
-    logging.info('Running speedtest done')
+    try:
+        output = subprocess.check_output("speedtest-cli --csv", shell=True).decode()
+        logging.info('Speedtest completed successfully')
+        return output.strip().split(',')
+    except subprocess.CalledProcessError as e:
+        logging.error(f'Speedtest failed with error: {e}')
+        return None
 
 
 def write_to_csv(data, filename='speedtest_results.csv'):
@@ -78,6 +80,8 @@ def run():
     logging.info('*** START ***')
 
     result = run_speedtest()
+    logging.info(result)
+
     # result = ['41338', 'Cooperativa de Colonia Caroya y Jesus Maria Ltda', 'Colonia Caroya', '2023-04-15T18:41:54.708922Z', '663.0926436032137', '78.865', '19914755.186711118', '2171532.6305631828', '', '181.102.18.27']
     write_to_influxdb(result)
 
