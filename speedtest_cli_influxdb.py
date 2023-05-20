@@ -1,5 +1,6 @@
 import os
 import csv
+from datetime import datetime
 import subprocess
 import time
 
@@ -24,7 +25,7 @@ def run_speedtest():
         return output.strip().split(',')
     except subprocess.CalledProcessError as e:
         logging.error(f'Speedtest failed with error: {e}')
-        return None
+        return ['', '', '', datetime.now().isoformat(), '0.0', '0.0', '0.0', '0.0', '', '']
 
 
 def write_to_csv(data, filename='speedtest_results.csv'):
