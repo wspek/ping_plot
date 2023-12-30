@@ -25,7 +25,7 @@ def run_speedtest():
         return output.strip().split(',')
     except subprocess.CalledProcessError as e:
         logging.error(f'Speedtest failed with error: {e}')
-        return ['', '', '', datetime.now().isoformat(), '0.0', '0.0', '0.0', '0.0', '', '']
+        return ['', '', '', datetime.utcnow().isoformat(), '0.0', '0.0', '0.0', '0.0', '', '']
 
 
 def write_to_csv(data, filename='speedtest_results.csv'):
@@ -44,7 +44,7 @@ def get_influxdb_container_ip():
     container_name = "influxdb"  # Replace this with the name you've given to your InfluxDB container
 
     try:
-        cmd = f"docker inspect {container_name} --format '{{{{.NetworkSettings.IPAddress}}}}'"
+        cmd = f"docker inspect {container_name} --format '{{{{range.NetworkSettings.Networks}}}}{{{{.IPAddress}}}}{{{{end}}}}'"
     except subprocess.CalledProcessError:
         raise RuntimeError("Failed to get InfluxDB container ID. Are you sure Docker is installed?")
 
