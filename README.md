@@ -13,6 +13,7 @@ docker run -d   --name influxdb -p 8086:8086 -v ~/influxdb/data:/var/lib/influxd
 docker exec -it INFLUX_CONTAINER_ID influx -execute 'CREATE DATABASE speedtest'
 
 echo "UID: $(id -u)";echo "GID: $(id -g)"
+sudo chown -R $USER:$USER ~/grafana/data
 docker run -d --name grafana --user UID:GID -p 3000:3000 -v ~/grafana/data:/var/lib/grafana --env GF_FEATURE_TOGGLES_ENABLE=publicDashboards grafana/grafana
 
 crontab -e
